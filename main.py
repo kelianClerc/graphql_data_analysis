@@ -3,7 +3,7 @@ from duration import Duration
 import numpy as np
 import matplotlib.pyplot as plt
 
-defaultPath = "./data/mock1.graphdata"
+defaultPath = "./data/mockgen.graphdata"
 dataPerf = []
 dataSample = []
 
@@ -39,8 +39,10 @@ def getMirrorMesure(toCompare):
 	return None;
 
 def appendTotalValue(vals, toAppends):
+	last = vals[len(vals) - 1]
 	for toAppend in toAppends :
-		vals.append(toAppend + sum(vals));
+		vals.append(last + toAppend);
+		last += toAppend;
 	return vals;
 
 def sortResultAndDisplay():
@@ -66,10 +68,13 @@ def sortResultAndDisplay():
 	showDurationEvolution(graphqlDurationEvolution, restDurationEvolution)
 	showCumulatedSizeEvolution(graphqlSizeEvolution, restSizeEvolution)
 	showDurationByActivity(graphqlTimeByActivity, restTimeByActivity, xLabel)
+	showEvolution(graphqlDurationEvolution, restDurationEvolution, graphqlSizeEvolution, restSizeEvolution)
 
 def showDurationEvolution(graphqlDurationEvolution, restDurationEvolution):
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
+
+	print(restDurationEvolution)
 
 	ax.plot(graphqlDurationEvolution, marker="o", label="GraphQL")
 	ax.plot(restDurationEvolution, marker="o", label="Rest")
@@ -89,6 +94,30 @@ def showCumulatedSizeEvolution(graphqlSizeEvolution, restSizeEvolution):
 	ax.set_xlabel("Screen navigation")
 	ax.set_ylabel("Cumulated response size")
 	plt.xticks(range(1, len(restSizeEvolution)))
+	plt.show()
+
+def showEvolution(graphqlDurationEvolution, restDurationEvolution, graphqlSizeEvolution, restSizeEvolution) :
+	fig = plt.figure()
+	ax = fig.add_subplot(211)
+	ax2 = fig.add_subplot(212)
+
+	print(restDurationEvolution)
+
+	ax.plot(graphqlDurationEvolution, marker="o", label="GraphQL")
+	ax.plot(restDurationEvolution, marker="o", label="Rest")
+	ax.legend(loc="upper right")
+	ax.set_xlabel("Screen navigation")
+	ax.set_ylabel("Cumulated query duration")
+	ax.set_xticks(range(1, len(restDurationEvolution)))
+
+	
+
+	ax2.plot(graphqlSizeEvolution, marker="o", label="GraphQL")
+	ax2.plot(restSizeEvolution, marker="o", label="Rest")
+	ax2.legend(loc="upper right")
+	ax2.set_xlabel("Screen navigation")
+	ax2.set_ylabel("Cumulated response size")
+	ax2.set_xticks(range(1, len(restSizeEvolution)))
 	plt.show()
 
 def showDurationByActivity(graphqlTimeByActivity, restTimeByActivity, xLabel):

@@ -14,12 +14,16 @@ class Stati:
 
 	def getTotalDurations(self):
 		result = []
+		last = 0
 		for val in self.durations:
-			result.append(val + sum(result))
+			result.append(val + last)
+			last += val
 		return result
 
 	def getTotalResponseSize(self):
 		result = []
+		last = 0
 		for val in self.sizes:
-			result.append(val + sum(result))
+			result.append(val + last)
+			last += val
 		return result
