@@ -2,7 +2,7 @@ from perf import Perf
 from duration import Duration
 import matplotlib.pyplot as plt
 
-defaultPath = "../data/mock1.graphdata"
+defaultPath = "./data/mock1.graphdata"
 dataPerf = []
 dataSample = []
 
@@ -89,6 +89,7 @@ def getSizeReceivedEvolution():
 	plt.show()
 
 def meanByActivity():
+	print "wip"
 	#Take a duration calculate mean and plot array of means
 
 
