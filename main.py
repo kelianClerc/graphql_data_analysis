@@ -1,5 +1,6 @@
 from perf import Perf
 from duration import Duration
+import numpy as np
 import matplotlib.pyplot as plt
 
 defaultPath = "./data/mock1.graphdata"
@@ -42,27 +43,67 @@ def appendTotalValue(vals, toAppends):
 		vals.append(toAppend + sum(vals));
 	return vals;
 
-def getTypeEvolution():
-	graphql =[0]
-	rest = [0]
+def sortResultAndDisplay():
+	graphqlDurationEvolution =[0]
+	restDurationEvolution = [0]	
+	graphqlSizeEvolution =[0]
+	restSizeEvolution = [0]
+	graphqlTimeByActivity = []
+	restTimeByActivity = []
+	xLabel = []
+
 	for sample in dataSample:
 		if sample.pref.requestType == 2:
 			continue;
-		rest = appendTotalValue(rest, sample.stat.getTotalDurations())
-		graphql = appendTotalValue(graphql, getMirrorMesure(sample.pref).stat.getTotalDurations())
+		restDurationEvolution = appendTotalValue(restDurationEvolution, sample.stat.getTotalDurations())
+		graphqlDurationEvolution = appendTotalValue(graphqlDurationEvolution, getMirrorMesure(sample.pref).stat.getTotalDurations())
+		restSizeEvolution = appendTotalValue(restSizeEvolution, sample.stat.getTotalResponseSize())
+		graphqlSizeEvolution = appendTotalValue(graphqlSizeEvolution, getMirrorMesure(sample.pref).stat.getTotalResponseSize())
+		restTimeByActivity.append(sample.stat.calculateDurationMean())
+		graphqlTimeByActivity.append(getMirrorMesure(sample.pref).stat.calculateDurationMean())
+		xLabel.append(sample.pref.endpoint)
 
-	print graphql
-	print rest
+	showDurationEvolution(graphqlDurationEvolution, restDurationEvolution)
+	showCumulatedSizeEvolution(graphqlSizeEvolution, restSizeEvolution)
+	showDurationByActivity(graphqlTimeByActivity, restTimeByActivity, xLabel)
 
+def showDurationEvolution(graphqlDurationEvolution, restDurationEvolution):
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 
-	ax.plot(graphql, marker="o", label="GraphQL")
-	ax.plot(rest, marker="o", label="Rest")
+	ax.plot(graphqlDurationEvolution, marker="o", label="GraphQL")
+	ax.plot(restDurationEvolution, marker="o", label="Rest")
 	ax.legend(loc="upper right")
 	ax.set_xlabel("Screen navigation")
 	ax.set_ylabel("Cumulated query duration")
-	plt.xticks(range(1, len(rest)))
+	plt.xticks(range(1, len(restDurationEvolution)))
+	plt.show()
+
+def showCumulatedSizeEvolution(graphqlSizeEvolution, restSizeEvolution):
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+
+	ax.plot(graphqlSizeEvolution, marker="o", label="GraphQL")
+	ax.plot(restSizeEvolution, marker="o", label="Rest")
+	ax.legend(loc="upper right")
+	ax.set_xlabel("Screen navigation")
+	ax.set_ylabel("Cumulated response size")
+	plt.xticks(range(1, len(restSizeEvolution)))
+	plt.show()
+
+def showDurationByActivity(graphqlTimeByActivity, restTimeByActivity, xLabel):
+	n_groups = len(graphqlTimeByActivity)
+	index = np.arange(n_groups)
+	bar_width = 0.25
+
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	ax.bar(index, graphqlTimeByActivity, bar_width, color="b", label="GraphQL")
+	ax.bar(index + bar_width, restTimeByActivity, bar_width, color="r", label="Rest")
+	ax.legend(loc="upper right")
+	ax.set_xlabel("Activity Name")
+	ax.set_ylabel("Mean waiting time")
+	plt.xticks(index + bar_width, xLabel)
 	plt.show()
 
 def getSizeReceivedEvolution():
@@ -90,6 +131,10 @@ def getSizeReceivedEvolution():
 
 def meanByActivity():
 	print "wip"
+	graphql = []
+	rest = []
+
+
 	#Take a duration calculate mean and plot array of means
 
 
@@ -100,5 +145,4 @@ dataSample = getTimePerActivity()
 #plt.plot(getMirrorMesure(dataSample[0].pref).stat.getTotalValues())
 #plt.show()
 
-getTypeEvolution();
-getSizeReceivedEvolution();
+sortResultAndDisplay();
