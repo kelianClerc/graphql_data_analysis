@@ -61,7 +61,7 @@ def sortResultAndDisplay():
 		graphqlSizeEvolution = appendTotalValue(graphqlSizeEvolution, getMirrorMesure(sample.pref).stat.getTotalResponseSize())
 		restTimeByActivity.append(sample.stat.calculateDurationMean())
 		graphqlTimeByActivity.append(getMirrorMesure(sample.pref).stat.calculateDurationMean())
-		xLabel.append(sample.pref.endpoint)
+		xLabel.append(sample.pref.className)
 
 	showDurationEvolution(graphqlDurationEvolution, restDurationEvolution)
 	showCumulatedSizeEvolution(graphqlSizeEvolution, restSizeEvolution)

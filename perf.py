@@ -26,10 +26,10 @@ class Perf:
 		return self.timestampReceive - self.timestampSent
 
 	def exists(self, pref):
-		return pref.className == self.className and pref.requestType == self.requestType and pref.endpoint == self.endpoint
+		return pref.className == self.className and pref.requestType == self.requestType #and pref.endpoint == self.endpoint
 
 	def isMirrorOf(self, pref):
-		return pref.className == self.className and pref.requestType != self.requestType and pref.endpoint == self.endpoint
+		return pref.className == self.className and pref.requestType != self.requestType #and pref.endpoint == self.endpoint
 
 	def __str__(self):
 		result = "In activity " + self.className + ", query duration : "+ str(self.timestampReceive - self.timestampSent)
