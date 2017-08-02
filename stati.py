@@ -6,6 +6,8 @@ class Stati:
 		self.realDuration.append(firstData.realDuration);
 		self.sizes = []
 		self.sizes.append(firstData.responseSize);
+		self.roundTrip = []
+		self.roundTrip.append(firstData.roundTrips);
 
 	def calculateDurationMean(self):
 		return sum(self.durations) / len(self.durations);
@@ -17,6 +19,7 @@ class Stati:
 		self.durations.append(value.getDuration());
 		self.realDuration.append(value.realDuration);
 		self.sizes.append(value.responseSize);
+		self.roundTrip.append(value.roundTrips);
 
 	def getTotalDurations(self):
 		result = []
@@ -38,6 +41,14 @@ class Stati:
 		result = []
 		last = 0
 		for val in self.sizes:
+			result.append(val + last)
+			last += val
+		return result
+
+	def getTotalRoundTrip(self):
+		result = []
+		last = 0
+		for val in self.roundTrip:
 			result.append(val + last)
 			last += val
 		return result

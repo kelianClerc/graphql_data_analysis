@@ -50,6 +50,8 @@ def sortResultAndDisplay():
 	restDurationEvolution = [0]	
 	graphqlSizeEvolution =[0]
 	restSizeEvolution = [0]
+	graphqlRoundTripEvolution = [0]
+	restRoundTripEvolution = [0]
 	graphqlTimeByActivity = []
 	restTimeByActivity = []
 	xLabel = []
@@ -63,16 +65,23 @@ def sortResultAndDisplay():
 		graphqlSizeEvolution = appendTotalValue(graphqlSizeEvolution, getMirrorMesure(sample.pref).stat.getTotalResponseSize())
 		restTimeByActivity.append(sample.stat.calculateDurationMean())
 		graphqlTimeByActivity.append(getMirrorMesure(sample.pref).stat.calculateDurationMean())
+		#restRoundTripEvolution.append(restRoundTripEvolution, sample.stat.getTotalRoundTrip())
+		#graphqlRoundTripEvolution.append(graphqlRoundTripEvolution, getMirrorMesure(sample.perf).stat.getTotalRoundTrip())
+
 		xLabel.append(sample.pref.className)
+
 
 	showDurationEvolution(graphqlDurationEvolution, restDurationEvolution)
 	showCumulatedSizeEvolution(graphqlSizeEvolution, restSizeEvolution)
 	showDurationByActivity(graphqlTimeByActivity, restTimeByActivity, xLabel)
 	showEvolution(graphqlDurationEvolution, restDurationEvolution, graphqlSizeEvolution, restSizeEvolution)
+	#showRoundTripEvolution(graphqlRoundTripEvolution, restRoundTripEvolution)
 
 def showDurationEvolution(graphqlDurationEvolution, restDurationEvolution):
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
+	graphqlDurationEvolution = np.array(graphqlDurationEvolution) / 1000
+	restDurationEvolution = np.array(restDurationEvolution) / 1000
 
 	print(restDurationEvolution)
 
@@ -87,6 +96,9 @@ def showDurationEvolution(graphqlDurationEvolution, restDurationEvolution):
 def showCumulatedSizeEvolution(graphqlSizeEvolution, restSizeEvolution):
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
+
+	graphqlSizeEvolution = np.array(graphqlSizeEvolution) / 1000
+	restSizeEvolution = np.array(restSizeEvolution) / 1000
 
 	ax.plot(graphqlSizeEvolution, marker="o", label="GraphQL")
 	ax.plot(restSizeEvolution, marker="o", label="Rest")
@@ -109,8 +121,6 @@ def showEvolution(graphqlDurationEvolution, restDurationEvolution, graphqlSizeEv
 	ax.set_xlabel("Screen navigation")
 	ax.set_ylabel("Cumulated query duration")
 	ax.set_xticks(range(1, len(restDurationEvolution)))
-
-	
 
 	ax2.plot(graphqlSizeEvolution, marker="o", label="GraphQL")
 	ax2.plot(restSizeEvolution, marker="o", label="Rest")
