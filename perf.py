@@ -9,6 +9,7 @@ class Perf:
 	utileRatio = 0
 	requestType = 0
 	endpoint = ""
+	alreadySelected = False;
 
 	def __init__(self, fileData):
 		data = fileData.split("###")
@@ -31,7 +32,10 @@ class Perf:
 		return pref.className == self.className and pref.requestType == self.requestType #and pref.endpoint == self.endpoint
 
 	def isMirrorOf(self, pref):
-		return pref.className == self.className and pref.requestType != self.requestType #and pref.endpoint == self.endpoint
+		result = pref.className == self.className and pref.requestType != self.requestType and not self.alreadySelected;
+		if result:
+			alreadySelected = True
+		return result #and pref.endpoint == self.endpoint
 
 	def __str__(self):
 		result = "In activity " + self.className + ", query duration : "+ str(self.timestampReceive - self.timestampSent) + ", query real duration : " + str(self.realDuration)
