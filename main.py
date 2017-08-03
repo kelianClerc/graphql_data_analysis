@@ -2,6 +2,7 @@ from perf import Perf
 from duration import Duration
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
 
 defaultPath = "./data/mockgen.graphdata"
 dataPerf = []
@@ -257,6 +258,8 @@ def meanByActivity():
 
 	#Take a duration calculate mean and plot array of means
 
+if len(sys.argv) > 1:
+	defaultPath = sys.argv[1]
 
 buildObjects(readFile(defaultPath))
 dataSample = getTimePerActivity()
