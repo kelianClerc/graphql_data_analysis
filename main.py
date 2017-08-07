@@ -98,6 +98,8 @@ def appendEvolutionValue(lastValue, toAdd):
 
 def showDurationEvolution(graphqlDurationEvolution, restDurationEvolution, annotation):
 	fig = plt.figure()
+
+	fig.suptitle('Cumulated transmission time for app navigation', fontsize=14, fontweight='bold')
 	ax = fig.add_subplot(111)
 
 	print(restDurationEvolution)
@@ -106,7 +108,7 @@ def showDurationEvolution(graphqlDurationEvolution, restDurationEvolution, annot
 	ax.plot(restDurationEvolution, marker="o", label="Rest")
 	ax.legend(loc="upper left")
 	ax.set_xlabel("Screen navigation")
-	ax.set_ylabel("Cumulated query duration (ms)")
+	ax.set_ylabel("Cumulated request duration (ms)")
 	plt.xticks(range(1, len(restDurationEvolution)))
 
 	for i in xrange(1,len(graphqlDurationEvolution)):
@@ -120,13 +122,14 @@ def showDurationEvolution(graphqlDurationEvolution, restDurationEvolution, annot
 
 def showCumulatedSizeEvolution(graphqlSizeEvolution, restSizeEvolution, annotation):
 	fig = plt.figure()
+	fig.suptitle('Cumulated response size for app navigation', fontsize=14, fontweight='bold')
 	ax = fig.add_subplot(111)
 
 	ax.plot(graphqlSizeEvolution, marker="o", label="GraphQL")
 	ax.plot(restSizeEvolution, marker="o", label="Rest")
 	ax.legend(loc="upper left")
 	ax.set_xlabel("Screen navigation")
-	ax.set_ylabel("Cumulated response size")
+	ax.set_ylabel("Cumulated response size (b)")
 	plt.xticks(range(1, len(restSizeEvolution)))
 	for i in xrange(1,len(graphqlSizeEvolution)):
 		print graphqlSizeEvolution[i], i, annotation[i]
@@ -137,13 +140,15 @@ def showCumulatedSizeEvolution(graphqlSizeEvolution, restSizeEvolution, annotati
 
 def showRequestSizeEvolution(graphqlSizeEvolution, restSizeEvolution, annotation):
 	fig = plt.figure()
+
+	fig.suptitle('Cumulated request size for app navigation', fontsize=14, fontweight='bold')
 	ax = fig.add_subplot(111)
 
 	ax.plot(graphqlSizeEvolution, marker="o", label="GraphQL")
 	ax.plot(restSizeEvolution, marker="o", label="Rest")
 	ax.legend(loc="upper left")
 	ax.set_xlabel("Screen navigation")
-	ax.set_ylabel("Cumulated request size")
+	ax.set_ylabel("Cumulated request size (b)")
 	plt.xticks(range(1, len(restSizeEvolution)))
 	for i in xrange(1,len(graphqlSizeEvolution)):
 		print graphqlSizeEvolution[i], i, annotation[i]
@@ -154,6 +159,7 @@ def showRequestSizeEvolution(graphqlSizeEvolution, restSizeEvolution, annotation
 
 def showRoundTripEvolution(graphqlRoundTripEvolution, restRoundTripEvolution, annotation):
 	fig = plt.figure()
+	fig.suptitle('Cumulated roundtrips for app navigation', fontsize=14, fontweight='bold')
 	ax = fig.add_subplot(111)
 
 	print(restRoundTripEvolution)
@@ -195,6 +201,8 @@ def showDurationByActivity(graphqlTimeByActivity, restTimeByActivity, xLabel):
 	bar_width = 0.25
 
 	fig = plt.figure()
+
+	fig.suptitle('Mean response duration per activity', fontsize=14, fontweight='bold')
 	ax = fig.add_subplot(111)
 	ax.bar(index, graphqlTimeByActivity, bar_width, color="b", label="GraphQL")
 	ax.bar(index + bar_width, restTimeByActivity, bar_width, color="r", label="Rest")
@@ -268,5 +276,5 @@ dataSample = getTimePerActivity()
 #plt.plot(getMirrorMesure(dataSample[0].pref).stat.getTotalValues())
 #plt.show()
 
-#sortResultAndDisplay();
 SortChronologicaly();
+sortResultAndDisplay();
